@@ -6,11 +6,6 @@
 
 # Import Modules
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
-import numpy.matlib
-import numpy.linalg as LA
-from numpy.linalg import inv
 
 class L96:
   def __init__(self,F=8, dt=0.01):
