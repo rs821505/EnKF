@@ -14,7 +14,7 @@ from numpy.linalg import inv
 
 
 class EnKF:
-  def __init__(self, fmodel, localization=True, inf_factor=2, num_steps=1000, num_samps=50, tau=1.5):
+  def __init__(self, fmodel,T,localization=True, inf_factor=2, num_steps=1000, num_samps=50, tau=1.5):
     """
     Parameters:
     -----------
@@ -45,7 +45,7 @@ class EnKF:
     self.n_dim = 40         
     self.n_steps = num_steps     
     self.n_samps = num_samps   
-    self.T = .1                
+    self.T = T               
     self.oVar = .5         
     self.H = np.eye(self.n_dim)  
     self.H = self.H[::4,:]
@@ -94,7 +94,7 @@ class EnKF:
 
     for i in range(self.n_steps):
 
-      self.utrues[i, :] = self.f_model.advanceL96(uin, self.T) 
+      self.utrues[i, :] = self.f_model.advance(uin, self.T) 
       uin = self.utrues[i, :]
 
     uprior = self.utrues[1, :] 
@@ -107,7 +107,7 @@ class EnKF:
     Run the forward model
     """
     for j in range(self.n_samps):
-        self.uens[j, :] = self.f_model.advanceL96(self.uens[j, :], self.T)
+        self.uens[j, :] = self.f_model.advance(self.uens[j, :], self.T)
 
   def Forecast_Step(self,step):
     """

@@ -4,13 +4,12 @@ from numpy.fft import *
 
 
 class KS:
-  def __init__(self, domain, L=16, N=128, T=0.5, dt=0.05):
+  def __init__(self, domain, L=16, N=128, dt=0.05):
       """
       Parameters
       -------------
       :param L: int,  domain length
       :param N: int,  num degrees freedom
-      :param T: float, observation time window
       :param dt: float, timestep
       :param x: np array, domain
       :param k: nd np array, wave numbers
@@ -20,8 +19,8 @@ class KS:
       :param  g:  np array, 
       """
       self.x = domain
+      self.dt = dt
       self.k = (np.hstack([np.arange(N//2) ,0,(-1)*np.flip(np.arange(N//2)[1:])]).reshape(-1,1))/L 
-      self.niter= int(np.round(T/dt))
       self.E = np.exp(-dt*((self.k**4)-(self.k**2)/2))
       self.E2 = self.E**2
       self.g = -.5j*dt*self.k
@@ -40,11 +39,13 @@ class KS:
 
       return vout
 
-  def KS_advance(self,uin):
+  def advance(self,uin,T):
 
-      vin = fft(uin)
+      niter= int(np.round(T/self.dt))
 
-      for n in range(self.niter):
+      vin = fft(uin.T)
+
+      for n in range(niter):
 
           vin = self.KS_RK4(n,vin)
 

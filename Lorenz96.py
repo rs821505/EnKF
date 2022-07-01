@@ -28,7 +28,7 @@ class L96:
       uout = uin + (k1+2*k2+2*k3+k4)/6
       return uout
 
-  def advanceL96(self,uin,T):
+  def advance(self,uin,T):
 
       niter = int(T/self.dt)
 
