@@ -1,3 +1,8 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from numpy.fft import *
+
+
 class KS:
   def __init__(self, domain, L=16, N=128, T=0.5, dt=0.05):
       """
